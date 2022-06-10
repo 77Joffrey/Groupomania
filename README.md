@@ -17,5 +17,4 @@ Afin de démarrer l'application (activation du serveur puis de l'application):
    si il est installé sur votre poste : commande "npm install -g nodemon" puis lancement
    du serveur avec la commande "nodemon")
 
-4/ Placez-vous maintenant dans le dossier "frontend" puis exécuter la commande ""
 
