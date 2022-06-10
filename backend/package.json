@@ -1,0 +1,32 @@
+{
+  "name": "groupomania_api",
+  "version": "1.0.0",
+  "description": "API application Groupomania",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/77Joffrey/Groupomania.git"
+  },
+  "keywords": [
+    "API",
+    "Groupomania"
+  ],
+  "author": "Joffrey SPLAWSKI",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/77Joffrey/Groupomania/issues"
+  },
+  "homepage": "https://github.com/77Joffrey/Groupomania#readme",
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.3.6",
+    "mongoose-unique-validator": "^3.1.0",
+    "multer": "^1.4.5-lts.1"
+  }
+}
