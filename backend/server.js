@@ -18,7 +18,7 @@ app.use((req, res, next) => {
 });
 
 
-app.use("/api/auth", userAuthRoutes);
+app.use("/api/users/", userAuthRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/users/:id", userRoutes)
 
