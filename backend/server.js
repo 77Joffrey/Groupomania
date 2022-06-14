@@ -3,11 +3,15 @@ require("dotenv").config({ path: "./config/.env" });
 require("./config/db");
 const path = require("path");
 const app = express();
+const cookieParser = require('cookie-parser');
 
 const userAuthRoutes = require('./routes/users_auth_routes')
 const userRoutes = require('./routes/users_routes')
 
+const postRoutes = require('./routes/post_routes')
+
 app.use(express.json());
+app.use(cookieParser());
 
 
 app.use((req, res, next) => {
@@ -17,10 +21,9 @@ app.use((req, res, next) => {
   next();
 });
 
-
-app.use("/api/users/", userAuthRoutes);
+app.use("/api/users", userAuthRoutes);
 app.use("/api/users", userRoutes);
-app.use("/api/users/:id", userRoutes)
+app.use("/api/posts", postRoutes);
 
 
 app.listen(process.env.PORT, () => {
