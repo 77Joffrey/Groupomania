@@ -21,6 +21,8 @@ Afin de démarrer l'application (activation du serveur):
 
 -------> PARTIE FRONTEND:
 
+1/ Placez-vous d'abord dans le dossier "client" en exécutant la commande "cd client"
+
 Afin de démarrer l'application (React):
 # Getting Started with Create React App
 
