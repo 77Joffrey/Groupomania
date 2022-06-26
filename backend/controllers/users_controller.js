@@ -2,7 +2,7 @@ const User = require("../models/User");
 
 // Consultation des utilisateurs
 exports.getAllUsers = (req, res, next) => {
-    User.find().sort({password : -1})
+    User.find().select('-password')
       .then((users) => {
         res.status(200).json(users);
       })
@@ -12,7 +12,7 @@ exports.getAllUsers = (req, res, next) => {
   };
 
 exports.getOneUser = (req, res, next) => {
-    User.findOne({_id : req.params.id})/* .sort('-password') */
+    User.findOne({_id : req.params.id}).select('-password')
     .then(user => res.status(200).json(user))
     .catch((err) => {
         res.status(400).json({ err });

@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const PostSchema = new mongoose.Schema(
   {
     posterId: { type: String, required: true },
+    posterPseudo : { type : String},
     message: { type: String, trim: true, maxlength: 400 },
     picture: { type: String },
     likes: { type: Number },

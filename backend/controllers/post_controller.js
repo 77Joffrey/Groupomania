@@ -27,8 +27,9 @@ exports.getOnePost = (req, res, next) => {
 exports.createPost = async (req, res, next) => {
   const newPost = new Post({
     posterId: req.body.posterId,
+    posterPseudo : req.body.posterPseudo,
     message: req.body.message,
-    /* picture : `${req.protocol}://${req.get('host')}/public/images/${req.file.filename}`, */
+    picture : req.body.picture,
     likes: 0,
     dislikes: 0,
     usersLiked: [],
@@ -46,16 +47,27 @@ exports.createPost = async (req, res, next) => {
 exports.updatePost = (req, res, next) => {
   if (!ObjectID.isValid(req.params.id))
     return res.status(400).send("Id inconnu :" + req.params.id);
-  const updatePostContent = { message: req.body.message };
-  Post.findByIdAndUpdate(
-    req.params.id,
-    { $set: updatePostContent },
-    { new: true },
-    (err, data) => {
-      if (!err) res.status(200).send(data);
-      else console.log("Mise à jour du post impossible! " + err);
+    if(req.body.picture) {
+      const updatePostContent = { message: req.body.message, picture : req.body.picture};
+      Post.findByIdAndUpdate(
+        req.params.id,
+        { $set: updatePostContent },
+        { new: true },
+        (err, data) => {
+          if (!err) res.status(200).send(data);
+          else console.log("Mise à jour du post impossible! " + err);
+        })
+    } else {
+      const updatePostContent = { message: req.body.message };
+      Post.findByIdAndUpdate(
+        req.params.id,
+        { $set: updatePostContent },
+        { new: true },
+        (err, data) => {
+          if (!err) res.status(200).send(data);
+          else console.log("Mise à jour du post impossible! " + err);
+        })
     }
-  );
 };
 
 exports.deletePost = (req, res, next) => {
@@ -70,9 +82,9 @@ exports.deletePost = (req, res, next) => {
 exports.likePost = (req, res, next) => {
   Post.findOne({_id : req.params.id})
     .then(post =>{
-      switch (req.body.like) {
+      switch (req.body.likes) {
         case 1:
-          if(!post.usersLiked.includes(req.body.posterId) && req.body.like === 1) {
+          if(!post.usersLiked.includes(req.body.posterId) && req.body.likes === 1) {
             Post.updateOne({_id : req.params.id},
               { 
                 $inc : { likes : 1},
@@ -87,7 +99,7 @@ exports.likePost = (req, res, next) => {
         }
           break;
         case -1:
-          if(!post.usersDisliked.includes(req.body.posterId) && req.body.like === -1) {
+          if(!post.usersDisliked.includes(req.body.posterId) && req.body.likes === -1) {
             Post.updateOne({_id : req.params.id},
               {
                 $inc : { dislikes : 1},
@@ -102,7 +114,7 @@ exports.likePost = (req, res, next) => {
         }
           break;
         case 0 :
-          if(post.usersLiked.includes(req.body.posterId) && req.body.like === 0 ) {
+          if(post.usersLiked.includes(req.body.posterId) && req.body.likes === 0 ) {
             Post.updateOne({_id : req.params.id},
               {
                 $inc : { likes : -1 },
@@ -114,7 +126,7 @@ exports.likePost = (req, res, next) => {
           .catch(error => {
               res.status(400).json({ error })
           })
-        } else if(post.usersDisliked.includes(req.body.posterId) && req.body.like === 0 ) {
+        } else if(post.usersDisliked.includes(req.body.posterId) && req.body.likes === 0 ) {
           Post.updateOne({_id : req.params.id},
             {
               $inc : { dislikes : -1},
