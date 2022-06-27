@@ -7,15 +7,16 @@ import { isEmpty } from "../../utils/tools";
 
 const FormDataStyle = styled.form`
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  flex-direction: row;
+  flex-wrap : wrap;
+  justify-content: space-evenly;
   align-items: center;
   margin: auto;
   border: 5px solid ${colors.tertiary};
   border-radius: 10px;
   background-color: #fff;
-  width: fit-content;
-  height: 50px;
+  width: 90%;
+  height: fit-content;
   color: black;
   text-align: center;
 `;
@@ -38,7 +39,6 @@ const UpdateText = (props) => {
   const post = props.post;
   const postid = props.postid;
 
-  const [loadingUpdatePost, setLoadingUpdatePost] = useState(false);
   const [updateMessage, setUpdateMessage] = useState(post.message);
 
   const [file, setFile] = useState();
@@ -109,7 +109,7 @@ const UpdateText = (props) => {
 
   return (
     <React.Fragment>
-      <form onSubmit={handleUpdatePost}>
+      <FormDataStyle onSubmit={handleUpdatePost}>
         <textarea
           name="message"
           rows="5"
@@ -126,9 +126,12 @@ const UpdateText = (props) => {
             setFile(e.target.files[0]);
             setFilename(e.target.files[0].name);
           }}
+          className="btn-active"
         />
         <label htmlFor="customFile">{filename}</label>
-        <button onClick={handleUploadPicture}>Importer</button>
+        <button onClick={handleUploadPicture} className="btn-active">
+          Importer
+        </button>
         {!isEmpty(uploadedFile) ? (
           <div>
             <CardPicture src={uploadedFile.filePath} alt="user_post_pic" />
@@ -136,7 +139,7 @@ const UpdateText = (props) => {
         ) : null}
 
         <SubmitBtn type="submit" value="Valider" />
-      </form>
+      </FormDataStyle>
     </React.Fragment>
   );
 };

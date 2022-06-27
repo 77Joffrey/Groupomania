@@ -111,9 +111,10 @@ const CreatePost = (props) => {
             setFile(e.target.files[0]);
             setFilename(e.target.files[0].name);
           }}
+          className="btn-active"
         />
         <label htmlFor="customFile">{filename}</label>
-        <button onClick={handleUploadPicture}>Importer</button>
+        <button onClick={handleUploadPicture} className="btn-active">Importer</button>
         {!isEmpty(uploadedFile) ? (
           <div>
             <CardPicture src={uploadedFile.filePath} alt="user_post_pic" />

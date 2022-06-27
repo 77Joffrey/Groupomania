@@ -27,7 +27,7 @@ flex-direction : column;
 const CardPicture = styled.img`
   width: 360px;
   height: 250px;
-  border-radius: 5px;
+  border-radius: 10px;
 `;
 
 const LikeContainer = styled.div`

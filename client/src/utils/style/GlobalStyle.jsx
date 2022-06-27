@@ -22,6 +22,9 @@ const GlobalStyle = createGlobalStyle`
         width : 100%;
         height : 100%;
     }
+    section {
+        background-color : ${colors.secondary}
+    }
     h1 {
         font-weight : bold;
         font-size : 24px;
@@ -47,10 +50,14 @@ const GlobalStyle = createGlobalStyle`
         color : #FFF;
         border-radius : 20px;
         cursor : pointer;
+        margin : 5px;
     }
     .btn-active:hover {
         background-color : ${colors.secondary};
         color : ${colors.tertiary};
+    }
+    label {
+        overflow : hidden;
     }
     .log-btn {
         margin : 5px;
@@ -72,6 +79,7 @@ const GlobalStyle = createGlobalStyle`
         margin : 5px;
         width : 20px;
         height : 20px;
+        opacity : 0.7;
         cursor : pointer
     }
     .like-btn-on, .dislike-btn-on {
@@ -81,15 +89,19 @@ const GlobalStyle = createGlobalStyle`
         cursor : pointer
     }
     textarea {
-        min-width : 350px;
-        max-width : 450px;
+        maw-width : 100%;
+        min-width : 99%;
+        min-height : 25px;
         word-break: break-word;
+        height : 90%;
+        border : none;
+        border-radius: 10px;
     }
     p {
         text-align : left;
     }
     .post-message {
-        margin : 5px auto 5px auto;
+        margin : 10px auto 10px auto;
         width : 80%;
 
     }
