@@ -7,30 +7,32 @@ const SignInForm = () => {
 
   const handleLogin = (e) => {
     e.preventDefault();
-    const emailError = document.querySelector(".email_error");
-    const passwordError = document.querySelector(".password_error");
-
-    axios({
-      method: "post",
-      url: `${process.env.REACT_APP_API_URL}api/users/signin`,
-      withCredentials: true,
-      data: {
-        email,
-        password,
-      },
-    })
-      .then((res) => {
-        console.log(res);
-        if(res.data.errors) {
-          emailError.innerHTML = res.data.errors.email;
-          passwordError.innerHTML = res.data.errors.password;
-        } else {
-          window.location = "/";
-        }
+/*     const emailError = document.querySelector(".email_error");
+    const passwordError = document.querySelector(".password_error"); */
+    if(email !== "" && password !== ""){
+      axios({
+        method: "post",
+        url: `${process.env.REACT_APP_API_URL}api/users/signin`,
+        withCredentials: true,
+        data: {
+          email,
+          password,
+        },
       })
-      .catch((err) => {
-        console.log(err);
-      });
+        .then((res) => {
+          console.log(res);
+          if(res.data.errors) {
+  /*           emailError.innerHTML = res.data.errors.email;
+            passwordError.innerHTML = res.data.errors.password; */
+          } else {
+            window.location = "/";
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+
   };
 
   return (

@@ -33,8 +33,10 @@ const CardPicture = styled.img`
 const LikeContainer = styled.div`
   display : flex;
   flex-direction : row;
-  width : 60px;
-  height : 30px;
+  align-items : center;
+  justify-content : flex-end;
+  width : 90%;
+  height : fit-content;
   margin : 5px 0 5px auto;
 `
 const CardPosterStyle = styled.h2`

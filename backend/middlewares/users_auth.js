@@ -44,7 +44,6 @@ exports.requireAuth = (req, res, next) => {
       }
     })
   } else {
-    cookies.remove("jwt")
     res.status(400).send('Absence de token!')
     console.log('Absence de token!');
   }

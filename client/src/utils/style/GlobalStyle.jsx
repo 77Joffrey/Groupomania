@@ -81,8 +81,8 @@ const GlobalStyle = createGlobalStyle`
     }
     .like-btn-on, .dislike-btn-on {
         margin : 5px;
-        width : 30px;
-        height : 30px;
+        width : 35px;
+        height : 35px;
         cursor : pointer
     }
     textarea {

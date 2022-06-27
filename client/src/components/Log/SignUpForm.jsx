@@ -17,20 +17,12 @@ const SignUpForm = () => {
   useEffect(() => {
 if(password !== "" && controlPassword !== "" && password !== controlPassword) setControlPasswordError(ctrlPassErr) 
 else if(password !== "" && controlPassword !== "" && password === controlPassword) setControlPasswordError (ctrlPassOk)
-})
+}, [controlPassword, password])
 
   const handleRegister = async (e) => {
     e.preventDefault();
 
-  
-    const pseudoError = document.querySelector(".pseudo_error");
-    const emailError = document.querySelector(".email_error");
-    const passwordError = document.querySelector(".password_error");
-    const controlPasswordError = document.querySelector(
-      ".control-password_error"
-    );
-
-
+  if(pseudo !== "" && email !== "" && controlPasswordError === ctrlPassOk){
     axios({
       method: "post",
       url: `${process.env.REACT_APP_API_URL}api/users/signup`,
@@ -41,18 +33,39 @@ else if(password !== "" && controlPassword !== "" && password === controlPasswor
       },
     })
       .then((res) => {
-        console.log(res);
         swal("Success", "Nouveau compte créé avec succès!", "success");
         setFormSubmit(true);
+        if(res.data.includes(pseudo) && !res.data.errors.includes(email) && !res.data.errors.includes(password)){
+          swal("Error", "Le pseudo est déjà utilisé!", "error");
+        } else if(res.data.includes(email) && !res.data.errors.includes(pseudo) && !res.data.errors.includes(password)){
+          swal("Error", "L'adresse mail est déja utilisée", "error");
+        } else if(res.data.includes(password) && !res.data.errors.includes(pseudo) && !res.data.errors.includes(email)){
+          swal("Error", "Mot de passe incorrect!", "error");
+        } else {
+          swal("Error", "Veuillez vérifier les informations saisies dans le formulaire!", "error");
+        }
       })
       .catch((err) => {
-        pseudoError.innerHTML = err.data.errors.pseudo;
+
+/*         pseudoError.innerHTML = err.data.errors.pseudo;
           emailError.innerHTML = err.data.errors.email;
-          passwordError.innerHTML = err.data.errors.password;
+          passwordError.innerHTML = err.data.errors.password; */
           swal("Error", "Le compte existe déjà!", "error");
         console.log(err);
         return { err };
       });
+  } else {
+    swal("Error", "Veuillez renseigner le formulaire!", "error");
+  }
+/*     const pseudoError = document.querySelector(".pseudo_error");
+    const emailError = document.querySelector(".email_error");
+    const passwordError = document.querySelector(".password_error");
+    const controlPasswordError = document.querySelector(
+      ".control-password_error"
+    ); */
+
+
+    
   };
 
   return (
