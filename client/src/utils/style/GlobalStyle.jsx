@@ -22,9 +22,6 @@ const GlobalStyle = createGlobalStyle`
         width : 100%;
         height : 100%;
     }
-    section {
-        background-color : ${colors.secondary}
-    }
     h1 {
         font-weight : bold;
         font-size : 24px;

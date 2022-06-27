@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import SignInForm from "./SignInForm";
 import swal from 'sweetalert'
@@ -12,11 +12,17 @@ const SignUpForm = () => {
   const [controlPasswordError, setControlPasswordError] = useState("")
 
   const ctrlPassErr = "Les mots de passe ne correspondent pas!"
-  const ctrlPassOk = "Les mots de passe sont identiques!"
+  const ctrlPassOk = "Confirmation validée!"
 
+  useEffect(() => {
+if(password !== "" && controlPassword !== "" && password !== controlPassword) setControlPasswordError(ctrlPassErr) 
+else if(password !== "" && controlPassword !== "" && password === controlPassword) setControlPasswordError (ctrlPassOk)
+})
 
   const handleRegister = async (e) => {
     e.preventDefault();
+
+  
     const pseudoError = document.querySelector(".pseudo_error");
     const emailError = document.querySelector(".email_error");
     const passwordError = document.querySelector(".password_error");
@@ -40,9 +46,9 @@ const SignUpForm = () => {
         setFormSubmit(true);
       })
       .catch((err) => {
-/*         pseudoError.innerHTML = err.data.errors.pseudo;
+        pseudoError.innerHTML = err.data.errors.pseudo;
           emailError.innerHTML = err.data.errors.email;
-          passwordError.innerHTML = err.data.errors.password; */
+          passwordError.innerHTML = err.data.errors.password;
           swal("Error", "Le compte existe déjà!", "error");
         console.log(err);
         return { err };
@@ -90,13 +96,14 @@ const SignUpForm = () => {
           <br />
           <div className="password_error"></div>
           <br />
-          <label htmlFor="control-password">Vérification Password : </label>
+          <label htmlFor="control-password">Password : </label>
           <input
             type="password"
             name="control_password"
             id="control-password"
             onChange={(e) => setControlPassword(e.target.value)}
             value={controlPassword}
+            placeholder="Confirmer le mot de passe"
           />
           <br />
           <div className="control-password_error">{controlPasswordError}</div>

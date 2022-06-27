@@ -1,6 +1,5 @@
 import React from "react";
 import { useState } from "react";
-import styled from "styled-components";
 
 import SignUpForm from "./SignUpForm";
 import SignInForm from "./SignInForm";
@@ -23,10 +22,10 @@ const Log = () => {
     <div>
       <div>
         <ul>
-          <li onClick={handleMods} id="register" className='log-btn btn-active'>
+          <li onClick={handleMods} id="register" className="log-btn btn-active">
             S'inscrire
           </li>
-          <li onClick={handleMods} id="login" className='log-btn btn-active'>
+          <li onClick={handleMods} id="login" className="log-btn btn-active">
             Se connecter
           </li>
         </ul>

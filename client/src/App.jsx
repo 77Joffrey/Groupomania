@@ -9,6 +9,7 @@ import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import { getUser } from "./actions/user_actions";
+import swal from "sweetalert";
 
 function App() {
   const [userId, setUserId] = useState(null);
@@ -27,10 +28,13 @@ function App() {
           setUserId(res.data.user_Id);
           setRole(res.data.role);
           setPseudo(res.data.pseudo);
-          console.log(res.data);
         })
         .catch((err) => {
-          console.log("Absence de token!");
+          swal({
+            title: "Attention!",
+            text: "Vous n'êtes plus authentifié! Veuillez vous connecter!",
+            icon: "error",
+          });
         });
     };
     fetchToken();
