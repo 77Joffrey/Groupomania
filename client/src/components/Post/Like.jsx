@@ -1,54 +1,35 @@
 import React, { useState, useContext, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import swal from "sweetalert";
 
 import { UserIdContext } from "../AppContext";
-import { isEmpty } from "../../utils/tools";
 
 const Like = (props) => {
   const post = props.post;
-  const [loadPosts, setLoadPosts] = useState(true);
   const userId = useContext(UserIdContext);
   const [addLikes, setAddLikes] = useState(false);
   const [addDislikes, setAddDislikes] = useState(false);
-  const posts = useSelector((state) => state.postsReducer);
-
-  const checkUserLiked = [];
-  posts.forEach((element) => {
-    checkUserLiked.push(element.usersLiked.includes(userId.userId));
-  });
-  console.log(checkUserLiked);
-  const checkUserDisLiked = [];
-  posts.forEach((element) => {
-    checkUserDisLiked.push(element.usersLiked.includes(userId.userId));
-  });
-  console.log(checkUserDisLiked);
 
   useEffect(() => {
-    if (!checkUserLiked.includes(userId.userId) && post.likes ) 
-     setAddLikes(false);
-     if (checkUserLiked.includes(userId.userId)  && post.likes > 0)
-     setAddLikes(true);
-    }, [addLikes, checkUserLiked, post.likes, userId.userId])
-
-  useEffect(() => {
-    if (!checkUserDisLiked.includes(userId.userId))
-     setAddDislikes(false);
-     if (checkUserDisLiked.includes(userId.userId)  && post.dislikes > 0)
-     setAddDislikes(true)
-  }, [addDislikes, checkUserDisLiked, post.dislikes, userId.userId]);
+    if (post.usersLiked.includes(userId.userId)) setAddLikes(true);
+    else setAddLikes(false);
+    if (post.usersDisliked.includes(userId.userId)) setAddDislikes(true);
+    else setAddDislikes(false);
+  }, [userId.userId, post.usersLiked, post.usersDisliked]);
 
   const handleAddLike = (e) => {
     e.preventDefault();
-    if (addLikes === false && addDislikes === false) {
+    if (
+      addLikes === false &&
+      addDislikes === false &&
+      !post.usersLiked.includes(userId.userId)
+    ) {
       axios({
         method: "patch",
         url: `${process.env.REACT_APP_API_URL}api/posts/${post._id}/likes`,
         withCredentials: true,
         data: {
           posterId: userId.userId,
-          likes: 1,
         },
       })
         .then(() => {
@@ -63,25 +44,18 @@ const Like = (props) => {
         .catch((err) => {
           console.log(err);
         });
-    } else {
-      swal({
-        title: "Refusé!",
-        text: "Vous avez déja ajouté un like à ce post!",
-        icon: "error",
-      });
     }
   };
 
   const handleRmvLike = (e) => {
     e.preventDefault();
-    if (addLikes === true) {
+    if (addLikes === true && post.usersLiked.includes(userId.userId)) {
       axios({
         method: "patch",
         url: `${process.env.REACT_APP_API_URL}api/posts/${post._id}/likes`,
         withCredentials: true,
         data: {
           posterId: userId.userId,
-          likes: 0,
         },
       })
         .then(() => {
@@ -96,25 +70,22 @@ const Like = (props) => {
         .catch((err) => {
           console.log(err);
         });
-    } else {
-      swal({
-        title: "Refusé!",
-        text: "Vous n'avez pas encore ajouté de like!",
-        icon: "error",
-      });
     }
   };
 
   const handleAddDisLike = (e) => {
     e.preventDefault();
-    if (addDislikes === false && addLikes === false) {
+    if (
+      addDislikes === false &&
+      addLikes === false &&
+      !post.usersDisliked.includes(userId.userId)
+    ) {
       axios({
         method: "patch",
-        url: `${process.env.REACT_APP_API_URL}api/posts/${post._id}/likes`,
+        url: `${process.env.REACT_APP_API_URL}api/posts/${post._id}/dislikes`,
         withCredentials: true,
         data: {
           posterId: userId.userId,
-          likes: -1,
         },
       })
         .then(() => {
@@ -129,25 +100,18 @@ const Like = (props) => {
         .catch((err) => {
           console.log(err);
         });
-    } else {
-      swal({
-        title: "Refusé!",
-        text: "Vous avez déja ajouté un dislike à ce post!",
-        icon: "error",
-      });
     }
   };
 
   const handleRmvDislike = (e) => {
     e.preventDefault();
-    if (addDislikes === true) {
+    if (addDislikes === true && post.usersDisliked.includes(userId.userId)) {
       axios({
         method: "patch",
-        url: `${process.env.REACT_APP_API_URL}api/posts/${post._id}/likes`,
+        url: `${process.env.REACT_APP_API_URL}api/posts/${post._id}/dislikes`,
         withCredentials: true,
         data: {
           posterId: userId.userId,
-          likes: 0,
         },
       })
         .then(() => {
@@ -162,26 +126,20 @@ const Like = (props) => {
         .catch((err) => {
           console.log(err);
         });
-    } else {
-      swal({
-        title: "Refusé!",
-        text: "Vous n'avez pas encore ajouté de dislike!",
-        icon: "error",
-      });
     }
   };
 
   return (
-    <React.Fragment key={post._id}>
+    <React.Fragment>
       {addLikes === true ? (
         <React.Fragment>
           <img
             src="images/like.jpg"
             alt="like_pic"
             onClick={handleRmvLike}
-            className="like-btn:active"
+            className="like-btn-on"
           />
-          <span>{post.likes}</span>
+          <span>{post.usersLiked.length}</span>
         </React.Fragment>
       ) : (
         <React.Fragment>
@@ -189,9 +147,9 @@ const Like = (props) => {
             src="images/like.jpg"
             alt="like_pic"
             onClick={handleAddLike}
-            className="like-btn"
+            className="like-btn-off"
           />
-          <span>{post.likes}</span>
+          <span>{post.usersLiked.length}</span>
         </React.Fragment>
       )}
       {addDislikes === true ? (
@@ -200,9 +158,9 @@ const Like = (props) => {
             src="images/dislike.jpg"
             alt="dislike_pic"
             onClick={handleRmvDislike}
-            className="dislike-btn:active"
+            className="dislike-btn-on"
           />
-          <span>{post.dislikes}</span>
+          <span>{post.usersDisliked.length}</span>
         </React.Fragment>
       ) : (
         <React.Fragment>
@@ -210,9 +168,9 @@ const Like = (props) => {
             src="images/dislike.jpg"
             alt="dislike_pic"
             onClick={handleAddDisLike}
-            className="dislike-btn"
+            className="dislike-btn-off"
           />
-          <span>{post.dislikes}</span>
+          <span>{post.usersDisliked.length}</span>
         </React.Fragment>
       )}
     </React.Fragment>

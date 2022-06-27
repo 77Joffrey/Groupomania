@@ -6,8 +6,6 @@ const PostSchema = new mongoose.Schema(
     posterPseudo : { type : String},
     message: { type: String, trim: true, maxlength: 400 },
     picture: { type: String },
-    likes: { type: Number },
-    dislikes: { type: Number },
     usersLiked: [String],
     usersDisliked: [String],
   },

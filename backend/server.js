@@ -2,7 +2,6 @@ const express = require("express");
 const fileUpload = require("express-fileupload");
 require("dotenv").config({ path: "./config/.env" });
 require("./config/db");
-const path = require("path");
 const app = express();
 const cookieParser = require("cookie-parser");
 
@@ -48,8 +47,6 @@ app.post("/api/posts/file", (req, res) => {
 });
 
 /* ------------------------------------------------------------------------------------------------------ */
-
-app.use("/images", express.static(path.join(__dirname, "images")));
 
 app.use("/api/token", userRequireRoutes);
 app.use("/api/users", usersLogRoutes);

@@ -5,7 +5,6 @@ import styled from "styled-components";
 import colors from "../../utils/style/colors";
 import { isEmpty } from "../../utils/tools";
 
-
 const SubmitBtn = styled.input`
   width: fit-content;
   background-color: ${colors.tertiary};
@@ -20,105 +19,110 @@ const CardPicture = styled.img`
   border-radius: 5px;
 `;
 
-
-const CreatePost = ( props ) => {
-
+const CreatePost = (props) => {
   const getPosterId = props.cle;
   const getPosterPseudo = props.pseudo;
 
-    const [addMessage, setAddMessage] = useState("");
+  const [addMessage, setAddMessage] = useState("");
 
-    const [file, setFile] = useState();
-    const [filename, setFilename] = useState("");
-    const [uploadedFile, setUploadedfile] = useState({});
+  const [file, setFile] = useState();
+  const [filename, setFilename] = useState("");
+  const [uploadedFile, setUploadedfile] = useState({});
+  const [verifFile, setVerifFile] = useState(false);
 
-    const handleAddPost = (e) => {
-        e.preventDefault();
-
-          axios({
-            method: "post",
-            url: `${process.env.REACT_APP_API_URL}api/posts`,
-            withCredentials: true,
-            data: {
-              message : addMessage,
-              picture : filename,
-              posterId : getPosterId,
-              posterPseudo : getPosterPseudo
-            },
-          })
-          .then(() => {
-            swal({
-              title: "Ajouté!",
-              text: "Votre post a bien été créé!",
-              icon: "success",
-            })
-            .then(() => {
-              window.location = "/"
-            })
-          })
-          .catch((err) => {
-            console.log(err);
+  const handleAddPost = (e) => {
+    e.preventDefault();
+    if (filename && verifFile === false) {
+      swal({
+        title: "Erreur!",
+        text: "Veuillez importer votre image!",
+        icon: "error",
+      });
+    } else {
+      axios({
+        method: "post",
+        url: `${process.env.REACT_APP_API_URL}api/posts`,
+        withCredentials: true,
+        data: {
+          message: addMessage,
+          picture: filename,
+          posterId: getPosterId,
+          posterPseudo: getPosterPseudo,
+        },
+      })
+        .then(() => {
+          swal({
+            title: "Ajouté!",
+            text: "Votre post a bien été créé!",
+            icon: "success",
+          }).then(() => {
+            window.location = "/";
           });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  };
+
+  const handleUploadPicture = async (e) => {
+    e.preventDefault();
+    setVerifFile(true);
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+      const res = await axios.post(
+        `${process.env.REACT_APP_API_URL}api/posts/file`,
+        formData,
+        {
+          headers: {
+            "Content-type": "multipart/form-data",
+          },
         }
-    
-      const handleUploadPicture = async (e) => {
-        e.preventDefault();
-        const formData = new FormData();
-        formData.append("file", file);
-    
-        try {
-          const res = await axios.post(
-            `${process.env.REACT_APP_API_URL}api/posts/file`,
-            formData,
-            {
-              headers: {
-                "Content-type": "multipart/form-data",
-              },
-            }
-          );
-          const { fileName, filePath } = res.data;
-          console.log(res.data);
-          setUploadedfile({ fileName, filePath });
-        } catch (err) {
-          if (err.response.status === 500) {
-            console.log("Problème serveur");
-          } else {
-            console.log(err.response.data.msg);
-          }
-        }
-      };
-    
+      );
+      const { fileName, filePath } = res.data;
+      setUploadedfile({ fileName, filePath });
+    } catch (err) {
+      if (err.response.status === 500) {
+        console.log("Problème serveur");
+      } else {
+        console.log(err.response.data.msg);
+      }
+    }
+  };
+
   return (
-  <div>
-    <form onSubmit={handleAddPost}>
-  <textarea
-    name="message"
-    rows="5"
-    cols="50"
-    maxLength="500"
-    onChange={(e) => setAddMessage(e.target.value)}
-    value={addMessage}
-  ></textarea>
-
-  <input
-    type="file"
-    id="customFile"
-    onChange={(e) => {
-      setFile(e.target.files[0]);
-      setFilename(e.target.files[0].name);
-    }}
-  />
-  <label htmlFor="customFile">{filename}</label>
-  <button onClick={handleUploadPicture}>Importer</button>
-  {!isEmpty(uploadedFile) ? (
     <div>
-      <CardPicture src={uploadedFile.filePath} alt="user_post_pic" />
-    </div>
-  ) : null}
+      <form onSubmit={handleAddPost}>
+        <textarea
+          name="message"
+          rows="5"
+          cols="50"
+          maxLength="500"
+          onChange={(e) => setAddMessage(e.target.value)}
+          value={addMessage}
+        ></textarea>
 
-  <SubmitBtn type="submit" value="Valider" />
-</form>
-</div>
+        <input
+          type="file"
+          id="customFile"
+          onChange={(e) => {
+            setFile(e.target.files[0]);
+            setFilename(e.target.files[0].name);
+          }}
+        />
+        <label htmlFor="customFile">{filename}</label>
+        <button onClick={handleUploadPicture}>Importer</button>
+        {!isEmpty(uploadedFile) ? (
+          <div>
+            <CardPicture src={uploadedFile.filePath} alt="user_post_pic" />
+          </div>
+        ) : null}
+
+        <SubmitBtn type="submit" value="Valider" />
+      </form>
+    </div>
   );
 };
 

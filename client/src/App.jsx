@@ -10,7 +10,6 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import { getUser } from "./actions/user_actions";
 
-
 function App() {
   const [userId, setUserId] = useState(null);
   const [role, setRole] = useState("");
@@ -27,7 +26,7 @@ function App() {
         .then((res) => {
           setUserId(res.data.user_Id);
           setRole(res.data.role);
-          setPseudo(res.data.pseudo)
+          setPseudo(res.data.pseudo);
           console.log(res.data);
         })
         .catch((err) => {
@@ -38,13 +37,9 @@ function App() {
 
     if (userId) {
       dispatch(getUser(userId));
-      document.title = "Groupomania - Social-Network"
+      document.title = "Groupomania - Social-Network";
     }
-
-    
-    
   }, [dispatch, userId]);
-
 
   return (
     <Router>
@@ -53,7 +48,7 @@ function App() {
         <Navbar />
         <Routes>
           <Route index path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />    
+          <Route path="/login" element={<Login />} />
         </Routes>
       </UserIdContext.Provider>
       <UseGlobalStyle />

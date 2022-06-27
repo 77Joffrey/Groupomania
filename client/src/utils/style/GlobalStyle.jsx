@@ -68,17 +68,30 @@ const GlobalStyle = createGlobalStyle`
         font-size : 11px;
         text-align : left
     }
-    .like-btn, .dislike-btn {
+    .like-btn-off, .dislike-btn-off {
         margin : 5px;
         width : 20px;
         height : 20px;
         cursor : pointer
     }
-    .like-btn:active, .dislike-btn:active {
+    .like-btn-on, .dislike-btn-on {
         margin : 5px;
-        width : 20px;
-        height : 20px;
+        width : 30px;
+        height : 30px;
         cursor : pointer
+    }
+    textarea {
+        min-width : 350px;
+        max-width : 450px;
+        word-break: break-word;
+    }
+    p {
+        text-align : left;
+    }
+    .post-message {
+        margin : 5px auto 5px auto;
+        width : 80%;
+
     }
 
 `

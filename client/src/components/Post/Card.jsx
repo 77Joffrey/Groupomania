@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import { /* useDispatch */ useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { UserIdContext } from "../../components/AppContext";
 import axios from "axios";
 import swal from "sweetalert";
@@ -49,11 +49,14 @@ const Card = ({ post }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [loadingUpdatePost, setLoadingUpdatePost] = useState(false);
   const posts = useSelector((state) => state.postsReducer); 
-  const { userId, role, /* pseudo */ } = useContext(UserIdContext);
+  const { userId, role } = useContext(UserIdContext);
 
 
   const loadUpdatePost = (e) => {
     setLoadingUpdatePost(true);
+  };
+  const cancelUpdatePost = (e) => {
+    setLoadingUpdatePost(false);
   };
 
   const handleDeletePost = (e) => {
@@ -91,18 +94,24 @@ const Card = ({ post }) => {
           {role === "admin" ? (
             <React.Fragment>
               <CardPosterStyle post={post}>{post.posterPseudo} à écrit :</CardPosterStyle>
-              <p>{post.message}</p>
+              <p className="post-message">{post.message}</p>
               {post.picture ? (
                 <div>
                   <CardPicture src={`images/posts/${post.picture}`} alt="user_post_pic" />
                 </div>
               ) : null}
               <div>
+              {loadingUpdatePost === false ? (
                 <input className="btn-active"
                   type={"button"}
                   value={"Modifier"}
                   onClick={loadUpdatePost}
-                />
+                /> ) : (
+                  <input className="btn-active"
+                    type={"button"}
+                    value={"Annuler"}
+                    onClick={cancelUpdatePost}
+                  /> )}
                 <input
                   type={"submit"}
                   value={"Supprimer"}
@@ -128,7 +137,7 @@ const Card = ({ post }) => {
           ) : post.posterId === userId && role === "user" ? (
             <React.Fragment>
               <CardPosterStyle post={post}>{post.posterPseudo} à écrit :</CardPosterStyle>
-              <p>{post.message}</p>
+              <p className="post-message">{post.message}</p>
               {post.picture ? (
                 <div>
                   <CardPicture src={`images/posts/${post.picture}`} alt="user_post_pic" />
@@ -165,7 +174,7 @@ const Card = ({ post }) => {
           ) : post.posterId !== userId && role === "user" ? (
             <React.Fragment>
               <CardPosterStyle post={post}>{post.posterPseudo} à écrit :</CardPosterStyle>
-              <p>{post.message}</p>
+              <p className="post-message">{post.message}</p>
               {post.picture ? (
                 <div>
                   <CardPicture src={`images/posts/${post.picture}`} alt="user_post_pic" />

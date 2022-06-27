@@ -34,54 +34,54 @@ const SubmitBtn = styled.input`
   cursor: pointer;
 `;
 
-const UpdateText = ( props ) => {
+const UpdateText = (props) => {
+  const post = props.post;
+  const postid = props.postid;
 
-  const post = props.post
-  const postid = props.postid
-
-  const [loadingUpdatePost, setLoadingUpdatePost] = useState(true);
+  const [loadingUpdatePost, setLoadingUpdatePost] = useState(false);
   const [updateMessage, setUpdateMessage] = useState(post.message);
 
   const [file, setFile] = useState();
   const [filename, setFilename] = useState("");
   const [uploadedFile, setUploadedfile] = useState({});
-  const [verifFile, setVerifFile] = useState(false)
+  const [verifFile, setVerifFile] = useState(false);
 
   const handleUpdatePost = (e) => {
     e.preventDefault();
-    if(filename && verifFile === false) {
-      alert ('Veuillez importer une image!')
+    if (filename && verifFile === false) {
+      swal({
+        title: "Erreur!",
+        text: "Veuillez importer votre image!",
+        icon: "error",
+      });
     } else {
-      /* const filename */
       axios({
         method: "put",
         url: `${process.env.REACT_APP_API_URL}api/posts/${postid}`,
         withCredentials: true,
         data: {
-          message : updateMessage,
-          picture : filename
+          message: updateMessage,
+          picture: filename,
         },
       })
-      .then(() => {
-        swal({
-          title: "Modifié!",
-          text: "Votre post a bien été mis à jour!",
-          icon: "success",
-        })
         .then(() => {
-          window.location = "/"
+          swal({
+            title: "Modifié!",
+            text: "Votre post a bien été mis à jour!",
+            icon: "success",
+          }).then(() => {
+            window.location = "/";
+          });
         })
-      })
         .catch((err) => {
           console.log(err);
         });
     }
-    
   };
 
   const handleUploadPicture = async (e) => {
     e.preventDefault();
-    setVerifFile(true)
+    setVerifFile(true);
     const formData = new FormData();
     formData.append("file", file);
 

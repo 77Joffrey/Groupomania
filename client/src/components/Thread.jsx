@@ -9,63 +9,69 @@ import styled from "styled-components";
 import colors from "../utils/style/colors";
 import { UserIdContext } from "./AppContext";
 
-
 const ThreadContainer = styled.div`
-    display : flex;
-    flex-direction : column;
-    align-items : center;
-    background-color : ${colors.secondary}
-`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: ${colors.secondary};
+`;
 
 const ThreadContentContainer = styled.ul`
-    margin : 0 ;
-    padding : 0;
-    width : 600px
-`
+  margin: 0;
+  padding: 0;
+  width: 600px;
+`;
 const ThreadTitle = styled.h2`
-    display : flex;
-    align-self : flex-start;
-    margin-left : 15px
-`
+  display: flex;
+  align-self: flex-start;
+  margin-left: 15px;
+`;
 
 const Thread = () => {
-    const [loadPosts, setLoadPosts] = useState(true)
-    const [addPost, setAddPost] = useState(false)
-    const dispatch = useDispatch();
-    const posts = useSelector((state) => state.postsReducer)
-    const {userId, pseudo} = useContext(UserIdContext)
+  const [loadPosts, setLoadPosts] = useState(true);
+  const [addPost, setAddPost] = useState(false);
+  const dispatch = useDispatch();
+  const posts = useSelector((state) => state.postsReducer);
+  const { userId, pseudo } = useContext(UserIdContext);
 
-useEffect(() => {
-    if(loadPosts){
-        dispatch(getPosts())
-        setLoadPosts(false)
+  useEffect(() => {
+    if (loadPosts) {
+      dispatch(getPosts());
+      setLoadPosts(false);
     }
+  }, [dispatch, loadPosts]);
 
-}, [dispatch, loadPosts]);
-
-const handleAddPost = () => {
-    setAddPost(true)
-}
-
+  const handleAddPost = () => {
+    setAddPost(true);
+  };
+  const handleCancelPost = () => {
+    setAddPost(false);
+  };
   return (
-        <section>
-            <button onClick={handleAddPost} className="btn-active" >Ajouter</button>
-            {
-                addPost ? <CreatePost cle={userId} pseudo={pseudo} /> : null
-            }
-        <ThreadContainer>
-            <ThreadTitle>Fil d'actualité</ThreadTitle>
+    <section>
+      {addPost === false ? (
+        <button onClick={handleAddPost} className="btn-active">
+          Ajouter
+        </button>
+      ) : (
+        <React.Fragment>
+          <button onClick={handleCancelPost} className="btn-active">
+            Annuler
+          </button>
+          <CreatePost cle={userId} pseudo={pseudo} />
+        </React.Fragment>
+      )}
+      <ThreadContainer>
+        <ThreadTitle>Fil d'actualité</ThreadTitle>
         <ThreadContentContainer>
-            {!isEmpty(posts[0]) && posts.map((post) => {
-                return <Card post={post} /* postid={post._id} *//>
-            })
-            }
+          {!isEmpty(posts[0]) &&
+            posts.map((post) => {
+              return <Card post={post} /* postid={post._id} */ />;
+            })}
         </ThreadContentContainer>
-            
-        </ThreadContainer>
-        </section>
-
-  )
+      </ThreadContainer>
+    </section>
+  );
 };
 
 export default Thread;
