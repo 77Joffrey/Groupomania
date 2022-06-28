@@ -1,6 +1,20 @@
 import React, { useState } from "react";
 import axios from "axios";
 import swal from "sweetalert";
+import styled from "styled-components";
+
+const SignInFromStyle = styled.form`
+  width: 80%;
+  height: 60%;
+  @media screen and (min-width: 600px) and (max-width: 992px) {
+    width: 60%;
+    height: 50%;
+  }
+  @media screen and (max-width: 599px) {
+    width: 60%;
+    height: 70%;
+  }
+`;
 
 const SignInForm = () => {
   const [email, setEmail] = useState("");
@@ -40,7 +54,7 @@ const SignInForm = () => {
   };
 
   return (
-    <form action="" onSubmit={handleLogin}>
+    <SignInFromStyle action="" onSubmit={handleLogin}>
       <label htmlFor="email">Email : </label>
       <input
         type="email"
@@ -62,7 +76,7 @@ const SignInForm = () => {
       <br />
       <br />
       <input type="submit" value="Se connecter" />
-    </form>
+    </SignInFromStyle>
   );
 };
 

@@ -29,7 +29,6 @@ const Home = () => {
 
     fetchPosts();
   }, []);
-  console.log(posts);
   const userId = useContext(UserIdContext);
 
   return (

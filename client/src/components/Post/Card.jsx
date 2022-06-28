@@ -12,15 +12,17 @@ import UpdatePost from "./UpdatePost";
 
 const CardContainer = styled.li`
   display: flex;
-  flex-direction: column;
   margin: 15px 0 15px 0;
-  padding: 5px;
+  padding: 10px;
   width: 100%;
   height: fit-content;
   border: 4px ${colors.tertiary} double;
   border-radius: 10px;
   background-color: #fff;
   cursor: default;
+  @media screen and (min-width: 600px) and (max-width: 992px) {
+    width: 100%;
+  }
   @media screen and (max-width: 599px) {
     width: 90%;
     margin: 15px auto 15px auto;
@@ -29,15 +31,48 @@ const CardContainer = styled.li`
 `;
 
 const CardContentStyle = styled.div`
+  width : 100%;
+  height : 100%;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  justify-content : space-evenly;
+  @media screen and (min-width: 600px) and (max-width: 992px) {
+    flex-direction : column;
+    justify-content : space-evenly;
+    align-items : center;
+  }
+  @media screen and (max-width: 599px) {
+    width: 90%;
+    margin: 15px auto 15px auto;
+    justify-content: space-between;
+  }
 `;
 
+const CardPictureContainer = styled.div`
+  width : 55%;
+  height : 50%;
+  @media screen and (min-width: 600px) and (max-width: 992px) {
+    width: 80%;
+    height 50%: 
+  }
+  @media screen and (max-width: 599px) {
+    width : 100%;
+    height : 60%;
+  }
+`
+
 const CardPicture = styled.img`
-  width: 360px;
-  height: 250px;
+  width: 100%;
+  height: 100%;
   border-radius: 10px;
+  @media screen and (min-width: 600px) and (max-width: 992px) {
+    width: 80%;
+  }
+  @media screen and (max-width: 599px) {
+    width : 100%;
+    height : 100%;
+  }
 `;
 
 const LikeContainer = styled.div`
@@ -49,11 +84,19 @@ const LikeContainer = styled.div`
   height: fit-content;
   margin: 5px 0 5px auto;
 `;
+
 const CardPosterStyle = styled.h2`
   display: flex;
   align-self: flex-start;
-  width: fit-content;
-  margin-left: 10px;
+  align-items : center;
+  width: 80%;
+  margin: 15px auto 15px 10px;
+  @media screen and (min-width: 600px) and (max-width: 992px) {
+    width: 90%;
+  }
+  @media screen and (max-width: 599px) {
+    width : 100%
+  }
 `;
 
 const Card = (props) => {
@@ -61,8 +104,6 @@ const Card = (props) => {
   const [loadingUpdatePost, setLoadingUpdatePost] = useState(false);
   const posts = props.posts;
   const post = props.post;
-  console.log(post);
-  console.log(posts);
 
   const { userId, role } = useContext(UserIdContext);
 
@@ -111,12 +152,12 @@ const Card = (props) => {
               </CardPosterStyle>
               <p className="post-message">{post.message}</p>
               {post.picture ? (
-                <div>
+                <CardPictureContainer>
                   <CardPicture
                     src={`images/posts/${post.picture}`}
                     alt="user_post_pic"
                   />
-                </div>
+                </CardPictureContainer>
               ) : null}
               <div>
                 {loadingUpdatePost === false ? (
@@ -164,12 +205,12 @@ const Card = (props) => {
               </CardPosterStyle>
               <p className="post-message">{post.message}</p>
               {post.picture ? (
-                <div>
+                <CardPictureContainer>
                   <CardPicture
                     src={`images/posts/${post.picture}`}
                     alt="user_post_pic"
                   />
-                </div>
+                </CardPictureContainer>
               ) : null}
               <div>
                 {loadingUpdatePost === false ? (
@@ -217,12 +258,12 @@ const Card = (props) => {
               </CardPosterStyle>
               <p className="post-message">{post.message}</p>
               {post.picture ? (
-                <div>
+                <CardPictureContainer>
                   <CardPicture
                     src={`images/posts/${post.picture}`}
                     alt="user_post_pic"
                   />
-                </div>
+                </CardPictureContainer>
               ) : null}
               <LikeContainer>
                 <Like post={post} />

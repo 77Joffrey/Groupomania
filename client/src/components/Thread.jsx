@@ -24,7 +24,10 @@ const ThreadContainer = styled.div`
 const ThreadContentContainer = styled.ul`
   margin: 0;
   padding: 0;
-  width: 600px;
+  width: 800px;
+  @media screen and (min-width: 600px) and (max-width: 992px) {
+    width: 80%;
+  }
   @media screen and (max-width: 599px) {
     width: 100%;
   }
@@ -46,7 +49,6 @@ const Thread = (props) => {
   const [count, setCount] = useState(5);
   const { userId, pseudo } = useContext(UserIdContext);
   const posts = props.posts;
-  console.log(posts);
 
   useEffect(() => {
     if (loadPosts) {

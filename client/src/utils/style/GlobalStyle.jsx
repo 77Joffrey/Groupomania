@@ -99,8 +99,14 @@ const GlobalStyle = createGlobalStyle`
     }
     .post-message {
         margin : 10px auto 10px auto;
-        width : 80%;
-
+        width : 40%;
+        height : 50%;
+        @media screen and (min-width: 600px) and (max-width: 992px) {
+            width: 80%;
+          }
+          @media screen and (max-width: 599px) {
+            width: 100%;
+          }
     }
 
 `

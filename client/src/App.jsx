@@ -26,7 +26,6 @@ function App() {
         withCredentials: true,
       })
         .then((res) => {
-          console.log(res);
           setUserId(res.data.user_Id);
           setRole(res.data.role);
           setPseudo(res.data.pseudo);

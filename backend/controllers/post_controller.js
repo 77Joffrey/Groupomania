@@ -83,14 +83,11 @@ exports.deletePost = (req, res, next) => {
 };
 
 module.exports.likePost = async (req, res) => {
-  console.log('je clique');
   if (!ObjectID.isValid(req.params.id))
     return res.status(400).send("ID unknown : " + req.params.id);
 
   try {
     await Post.findOne({ _id: req.params.id }).then((post) => {
-      console.log(post.usersLiked.length + "likes");
-      console.log(post.usersLiked.includes(req.body.posterId));
       if (!post.usersLiked.includes(req.body.posterId)) {
         Post.updateOne(
           { _id: req.params.id },
@@ -124,8 +121,6 @@ module.exports.dislikePost = async (req, res) => {
 
   try {
     await Post.findOne({ _id: req.params.id }).then((post) => {
-      console.log(post.usersDisliked.length + "dislikes");
-      console.log(post.usersDisliked.includes(req.body.posterId));
       if (!post.usersDisliked.includes(req.body.posterId)) {
         Post.updateOne(
           { _id: req.params.id },

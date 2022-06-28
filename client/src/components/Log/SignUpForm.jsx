@@ -2,6 +2,20 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import SignInForm from "./SignInForm";
 import swal from "sweetalert";
+import styled from "styled-components";
+
+const SignUpFromStyle = styled.form`
+  width: 80%;
+  height: 60%;
+  @media screen and (min-width: 600px) and (max-width: 992px) {
+    width: 60%;
+    height: 80%;
+  }
+  @media screen and (max-width: 599px) {
+    width: 60%;
+    height: 70%;
+  }
+`;
 
 const SignUpForm = () => {
   const [formSubmit, setFormSubmit] = useState(false);
@@ -10,7 +24,6 @@ const SignUpForm = () => {
   const [password, setPassword] = useState("");
   const [controlPassword, setControlPassword] = useState("");
   const [controlPasswordError, setControlPasswordError] = useState("");
-  const [controlEmailError, setControlEmailError] = useState("");
 
   const ctrlPassErr = "Les mots de passe ne correspondent pas!";
   const ctrlPassOk = "Confirmation validée!";
@@ -72,7 +85,7 @@ const SignUpForm = () => {
           <SignInForm />
         </>
       ) : (
-        <form action="" onSubmit={handleRegister}>
+        <SignUpFromStyle action="" onSubmit={handleRegister}>
           <label htmlFor="pseudo">Pseudo : </label>
           <input
             type="text"
@@ -119,7 +132,7 @@ const SignUpForm = () => {
           <div className="control-password_error">{controlPasswordError}</div>
           <br />
           <input type="submit" value="Valider inscription" />
-        </form>
+        </SignUpFromStyle>
       )}
     </React.Fragment>
   );
