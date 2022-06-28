@@ -1,6 +1,8 @@
 const Post = require("../models/Post");
 const ObjectID = require("mongoose").Types.ObjectId;
 const fs = require("fs");
+const jwt = require("jsonwebtoken");
+const { verify } = require("crypto");
 
 exports.getPosts = (req, res, next) => {
   Post.find((err, data) => {
@@ -81,6 +83,7 @@ exports.deletePost = (req, res, next) => {
 };
 
 module.exports.likePost = async (req, res) => {
+  console.log('je clique');
   if (!ObjectID.isValid(req.params.id))
     return res.status(400).send("ID unknown : " + req.params.id);
 

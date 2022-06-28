@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import swal from "sweetalert";
 
 const SignInForm = () => {
   const [email, setEmail] = useState("");
@@ -7,12 +8,10 @@ const SignInForm = () => {
 
   const handleLogin = (e) => {
     e.preventDefault();
-/*     const emailError = document.querySelector(".email_error");
-    const passwordError = document.querySelector(".password_error"); */
-    if(email !== "" && password !== ""){
+    if (email !== "" && password !== "") {
       axios({
         method: "post",
-        url: `${process.env.REACT_APP_API_URL}api/users/signin`,
+        url: `${process.env.REACT_APP_API_URL}auth/signin`,
         withCredentials: true,
         data: {
           email,
@@ -21,18 +20,23 @@ const SignInForm = () => {
       })
         .then((res) => {
           console.log(res);
-          if(res.data.errors) {
-  /*           emailError.innerHTML = res.data.errors.email;
-            passwordError.innerHTML = res.data.errors.password; */
+
+          if (res.data.errors) {
           } else {
             window.location = "/";
           }
         })
         .catch((err) => {
+          swal(
+            "Error",
+            "Connexion impossible: Vérifier votre email ou votre mot de passe!",
+            "error"
+          );
           console.log(err);
         });
+    } else if (password === "" || email === "") {
+      swal("Error", "Veuillez compléter le formulaire!", "error");
     }
-
   };
 
   return (
@@ -46,7 +50,6 @@ const SignInForm = () => {
         value={email}
       />
       <br />
-      <div className="email_error"></div>
       <br />
       <label htmlFor="password">Password : </label>
       <input
@@ -57,7 +60,6 @@ const SignInForm = () => {
         value={password}
       />
       <br />
-      <div className="password_error"></div>
       <br />
       <input type="submit" value="Se connecter" />
     </form>

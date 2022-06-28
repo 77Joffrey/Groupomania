@@ -2,8 +2,7 @@ const User = require("../models/User");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 require("dotenv").config({ path: "./config/.env" });
-const { signUpErrors } = require("../utils/user_errors");
-const { signInErrors } = require("../utils/user_errors");
+const { signUpErrors, signInErrors } = require("../utils/user_errors");
 
 // Création d'un nouvel utilisateur
 exports.signUp = (req, res, next) => {
@@ -11,16 +10,18 @@ exports.signUp = (req, res, next) => {
     .hash(req.body.password, 10)
     .then((hash) => {
       const user = new User({
-        pseudo : req.body.pseudo,
-        email : req.body.email,
-        password : hash
+        pseudo: req.body.pseudo,
+        email: req.body.email,
+        password: hash,
       });
       user
         .save()
-        .then(() => res.status(201).json({ user: user._id }))
+        .then(() => {
+          res.status(201).json({ user: user._id });
+        })
         .catch((err) => {
           const errors = signUpErrors(err);
-          res.status(400).send({ errors });
+          res.status(400).json({ errors });
         });
     })
     .catch((err) => res.status(500).json({ err }));
@@ -44,10 +45,7 @@ exports.signIn = (req, res, next) => {
           }
           console.log(user.pseudo);
           const token = jwt.sign(
-            { userId: user._id,
-              role : user.role,
-              pseudo : user.pseudo
-             },
+            { userId: user._id, role: user.role, pseudo: user.pseudo },
             process.env.USER_TOKEN_PASS,
             { expiresIn: "24h" }
           );
@@ -70,7 +68,6 @@ exports.signIn = (req, res, next) => {
 };
 
 exports.logOut = (req, res, next) => {
-
-  res.cookie("jwt", "", { expiresIn: 1 });
-  res.redirect("/");
+  res.clearCookie("jwt" /* , "", { expiresIn: 1 } */);
+  res.redirect("/login");
 };

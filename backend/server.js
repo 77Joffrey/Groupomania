@@ -8,11 +8,11 @@ const cookieParser = require("cookie-parser");
 const usersLogRoutes = require("./routes/users_log_routes");
 const usersRoutes = require("./routes/users_routes");
 const postsRoutes = require("./routes/post_routes");
-const userRequireRoutes = require("./routes/auth_routes");
+const authRoutes = require("./routes/auth_routes");
+const { requireAuth /* , checkUser  */ } = require("./middlewares/users_auth");
 
 app.use(express.json());
 app.use(cookieParser());
-
 
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
@@ -42,14 +42,17 @@ app.post("/api/posts/file", (req, res) => {
       console.log(err);
       return res.status(500).send(err);
     }
-    res.status(201).json({ fileName: file.name, filePath: `/images/posts/${file.name}` });
+    res
+      .status(201)
+      .json({ fileName: file.name, filePath: `/images/posts/${file.name}` });
   });
 });
 
 /* ------------------------------------------------------------------------------------------------------ */
 
-app.use("/api/token", userRequireRoutes);
-app.use("/api/users", usersLogRoutes);
+app.use("/api", authRoutes);
+app.get("/api/token", requireAuth);
+app.use("/auth", usersLogRoutes);
 app.use("/api/users", usersRoutes);
 app.use("/api/posts", postsRoutes);
 

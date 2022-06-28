@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useContext } from "react";
-import { useSelector } from "react-redux";
 import { UserIdContext } from "../../components/AppContext";
 import axios from "axios";
 import swal from "sweetalert";
@@ -12,16 +11,27 @@ import { isEmpty, dateParser } from "../../utils/tools";
 import UpdatePost from "./UpdatePost";
 
 const CardContainer = styled.li`
-display : flex;
-flex-direction : column;
+  display: flex;
+  flex-direction: column;
   margin: 15px 0 15px 0;
   padding: 5px;
   width: 100%;
   height: fit-content;
   border: 4px ${colors.tertiary} double;
   border-radius: 10px;
-  background-color: #FFF;
-  cursor : default
+  background-color: #fff;
+  cursor: default;
+  @media screen and (max-width: 599px) {
+    width: 90%;
+    margin: 15px auto 15px auto;
+    justify-content: ;
+  }
+`;
+
+const CardContentStyle = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
 `;
 
 const CardPicture = styled.img`
@@ -31,33 +41,35 @@ const CardPicture = styled.img`
 `;
 
 const LikeContainer = styled.div`
-  display : flex;
-  flex-direction : row;
-  align-items : center;
-  justify-content : flex-end;
-  width : 90%;
-  height : fit-content;
-  margin : 5px 0 5px auto;
-`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  width: 90%;
+  height: fit-content;
+  margin: 5px 0 5px auto;
+`;
 const CardPosterStyle = styled.h2`
-  display : flex;
-  align-self : flex-start;
-  width : fit-content;
-  margin-left : 10px;
-`
+  display: flex;
+  align-self: flex-start;
+  width: fit-content;
+  margin-left: 10px;
+`;
 
-
-const Card = ({ post }) => {
+const Card = (props) => {
   const [isLoading, setIsLoading] = useState(true);
   const [loadingUpdatePost, setLoadingUpdatePost] = useState(false);
-  const posts = useSelector((state) => state.postsReducer); 
+  const posts = props.posts;
+  const post = props.post;
+  console.log(post);
+  console.log(posts);
+
   const { userId, role } = useContext(UserIdContext);
 
-
-  const loadUpdatePost = (e) => {
+  const handleLoadUpdatePost = (e) => {
     setLoadingUpdatePost(true);
   };
-  const cancelUpdatePost = (e) => {
+  const handleCancelUpdatePost = (e) => {
     setLoadingUpdatePost(false);
   };
 
@@ -73,10 +85,9 @@ const Card = ({ post }) => {
           title: "Supprimé!",
           text: "Votre post a bien été supprimé!",
           icon: "success",
-        })
-        .then(() => {
-          window.location = "/"
-        })
+        }).then(() => {
+          window.location = "/";
+        });
       })
       .catch((err) => {
         console.log(err);
@@ -88,32 +99,41 @@ const Card = ({ post }) => {
   }, [posts]);
 
   return (
-    <CardContainer >
+    <CardContainer>
       {isLoading ? (
         <Loader />
       ) : (
-        <div>
+        <CardContentStyle>
           {role === "admin" ? (
             <React.Fragment>
-              <CardPosterStyle post={post}>{post.posterPseudo} à écrit :</CardPosterStyle>
+              <CardPosterStyle post={post}>
+                {post.posterPseudo} à écrit :
+              </CardPosterStyle>
               <p className="post-message">{post.message}</p>
               {post.picture ? (
                 <div>
-                  <CardPicture src={`images/posts/${post.picture}`} alt="user_post_pic" />
+                  <CardPicture
+                    src={`images/posts/${post.picture}`}
+                    alt="user_post_pic"
+                  />
                 </div>
               ) : null}
               <div>
-              {loadingUpdatePost === false ? (
-                <input className="btn-active"
-                  type={"button"}
-                  value={"Modifier"}
-                  onClick={loadUpdatePost}
-                /> ) : (
-                  <input className="btn-active"
+                {loadingUpdatePost === false ? (
+                  <input
+                    className="btn-active"
+                    type={"button"}
+                    value={"Modifier"}
+                    onClick={handleLoadUpdatePost}
+                  />
+                ) : (
+                  <input
+                    className="btn-active"
                     type={"button"}
                     value={"Annuler"}
-                    onClick={cancelUpdatePost}
-                  /> )}
+                    onClick={handleCancelUpdatePost}
+                  />
+                )}
                 <input
                   type={"submit"}
                   value={"Supprimer"}
@@ -133,24 +153,40 @@ const Card = ({ post }) => {
                 <Like post={post} />
               </LikeContainer>
               <div className="timestamps-style">
-                Posté : {dateParser(post.createdAt)} <br/>Mis à jour : {dateParser(post.updatedAt)}
+                Posté : {dateParser(post.createdAt)} <br />
+                Mis à jour : {dateParser(post.updatedAt)}
               </div>
             </React.Fragment>
           ) : post.posterId === userId && role === "user" ? (
             <React.Fragment>
-              <CardPosterStyle post={post}>{post.posterPseudo} à écrit :</CardPosterStyle>
+              <CardPosterStyle post={post}>
+                {post.posterPseudo} à écrit :
+              </CardPosterStyle>
               <p className="post-message">{post.message}</p>
               {post.picture ? (
                 <div>
-                  <CardPicture src={`images/posts/${post.picture}`} alt="user_post_pic" />
+                  <CardPicture
+                    src={`images/posts/${post.picture}`}
+                    alt="user_post_pic"
+                  />
                 </div>
               ) : null}
               <div>
-                <input className="btn-active"
-                  type={"button"}
-                  value={"Modifier"}
-                  onClick={loadUpdatePost}
-                />
+                {loadingUpdatePost === false ? (
+                  <input
+                    className="btn-active"
+                    type={"button"}
+                    value={"Modifier"}
+                    onClick={handleLoadUpdatePost}
+                  />
+                ) : (
+                  <input
+                    className="btn-active"
+                    type={"button"}
+                    value={"Annuler"}
+                    onClick={handleCancelUpdatePost}
+                  />
+                )}
                 <input
                   type={"submit"}
                   value={"Supprimer"}
@@ -170,27 +206,34 @@ const Card = ({ post }) => {
                 <Like post={post} />
               </LikeContainer>
               <div className="timestamps-style">
-                Posté : {dateParser(post.createdAt)} <br/>Mis à jour : {dateParser(post.updatedAt)}
+                Posté : {dateParser(post.createdAt)} <br />
+                Mis à jour : {dateParser(post.updatedAt)}
               </div>
             </React.Fragment>
           ) : post.posterId !== userId && role === "user" ? (
             <React.Fragment>
-              <CardPosterStyle post={post}>{post.posterPseudo} à écrit :</CardPosterStyle>
+              <CardPosterStyle post={post}>
+                {post.posterPseudo} à écrit :
+              </CardPosterStyle>
               <p className="post-message">{post.message}</p>
               {post.picture ? (
                 <div>
-                  <CardPicture src={`images/posts/${post.picture}`} alt="user_post_pic" />
+                  <CardPicture
+                    src={`images/posts/${post.picture}`}
+                    alt="user_post_pic"
+                  />
                 </div>
               ) : null}
               <LikeContainer>
                 <Like post={post} />
               </LikeContainer>
               <div className="timestamps-style">
-                Posté : {dateParser(post.createdAt)} <br/>Mis à jour : {dateParser(post.updatedAt)}
+                Posté : {dateParser(post.createdAt)} <br />
+                Mis à jour : {dateParser(post.updatedAt)}
               </div>
             </React.Fragment>
           ) : null}
-        </div>
+        </CardContentStyle>
       )}
     </CardContainer>
   );
