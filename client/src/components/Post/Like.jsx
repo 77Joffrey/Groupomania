@@ -43,6 +43,12 @@ const Like = (props) => {
         })
         .catch((err) => {
           console.log(err);
+          swal({
+            title: "Attention!",
+            text: "Vous n'êtes pas authentifié! Veuillez vous connecter!",
+            icon: "error",
+          });
+          window.location = "/login";
         });
     }
   };
@@ -69,6 +75,12 @@ const Like = (props) => {
         })
         .catch((err) => {
           console.log(err);
+          swal({
+            title: "Attention!",
+            text: "Vous n'êtes pas authentifié! Veuillez vous connecter!",
+            icon: "error",
+          });
+          window.location = "/login";
         });
     }
   };
@@ -99,6 +111,12 @@ const Like = (props) => {
         })
         .catch((err) => {
           console.log(err);
+          swal({
+            title: "Attention!",
+            text: "Vous n'êtes pas authentifié! Veuillez vous connecter!",
+            icon: "error",
+          });
+          window.location = "/login";
         });
     }
   };
@@ -125,6 +143,12 @@ const Like = (props) => {
         })
         .catch((err) => {
           console.log(err);
+          swal({
+            title: "Attention!",
+            text: "Vous n'êtes pas authentifié! Veuillez vous connecter!",
+            icon: "error",
+          });
+          window.location = "/login";
         });
     }
   };

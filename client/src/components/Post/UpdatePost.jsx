@@ -8,7 +8,7 @@ import { isEmpty } from "../../utils/tools";
 const FormDataStyle = styled.form`
   display: flex;
   flex-direction: row;
-  flex-wrap : wrap;
+  flex-wrap: wrap;
   justify-content: space-evenly;
   align-items: center;
   margin: auto;
@@ -75,6 +75,12 @@ const UpdateText = (props) => {
         })
         .catch((err) => {
           console.log(err);
+          swal({
+            title: "Ajouté!",
+            text: "Votre post a bien été créé!",
+            icon: "success",
+          });
+          window.location = "/login";
         });
     }
   };

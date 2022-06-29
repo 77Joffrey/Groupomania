@@ -6,7 +6,9 @@ module.exports.checkUser = (req, res, next) => {
     jwt.verify(token, process.env.USER_TOKEN_PASS);
     next();
   } else {
-    return res.sendStatus(401);
+    res.sendStatus(401)
+    alert ('Erreur : Authentification impossible!');
+    window.location = "/login"
   }
 };
 
@@ -31,6 +33,8 @@ exports.requireAuth = (req, res, next) => {
       }
     );
   } else {
-    res.status(400).send("Absence de token!");
+    res.status(401).send("Absence de token!");
+    alert ('Erreur : Authentification impossible!');
+    window.location = "/login"
   }
 };

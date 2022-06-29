@@ -20,7 +20,7 @@ const LogFormContainer = styled.div`
     flex-direction: row;
     justify-content: space-envenly;
     width: 100%;
-    height: 40%;
+    height: 45%;
   }
   @media screen and (max-width: 599px) {
     flex-direction: column;
