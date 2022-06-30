@@ -11,7 +11,7 @@ NB : Projet réalisé avec Node.js/Express/MongoDB/React
 -------> PARTIE BACKEND
 
 Afin de démarrer l'application (activation du serveur):
-1/ Placez-vous d'abord dans le dossier "backend" en exécutant la commande "cd backend"
+1/ Se placer dans le dossier "backend" en exécutant la commande "cd backend"
 
 2/ Exécuter la commande "npm install" depuis ce dossier
 
@@ -21,7 +21,9 @@ Afin de démarrer l'application (activation du serveur):
 
 -------> PARTIE FRONTEND:
 
-1/ Placez-vous d'abord dans le dossier "client" en exécutant la commande "cd client"
+1/ Se placer dans le dossier "client" en exécutant la commande "cd client"
+
+2/ Exécuter la commande "npm install" depuis ce dossier
 
 Afin de démarrer l'application (React):
 # Getting Started with Create React App
