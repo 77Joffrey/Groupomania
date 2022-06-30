@@ -43,43 +43,63 @@ exports.createPost = async (req, res, next) => {
 };
 
 exports.updatePost = (req, res, next) => {
+  const userData = res.locals.user;
   if (!ObjectID.isValid(req.params.id))
     return res.status(400).send("Id inconnu :" + req.params.id);
-  if (req.body.picture) {
-    const updatePostContent = {
-      message: req.body.message,
-      picture: req.body.picture,
-    };
-    Post.findByIdAndUpdate(
-      req.params.id,
-      { $set: updatePostContent },
-      { new: true },
-      (err, data) => {
-        if (!err) res.status(200).send(data);
-        else console.log("Mise à jour du post impossible! " + err);
+  Post.findOne({ _id: req.params.id })
+    .then((post) => {
+      postData = post;
+      if (postData.posterId == userData._id || userData.role === "admin") {
+        if (req.body.picture) {
+          const updatePostContent = {
+            message: req.body.message,
+            picture: req.body.picture,
+          };
+          Post.findByIdAndUpdate(
+            req.params.id,
+            { $set: updatePostContent },
+            { new: true },
+            (err, data) => {
+              if (!err) res.status(200).send(data);
+              else console.log("Mise à jour du post impossible! " + err);
+            }
+          );
+        } else {
+          const updatePostContent = { message: req.body.message };
+          Post.findByIdAndUpdate(
+            req.params.id,
+            { $set: updatePostContent },
+            { new: true },
+            (err, data) => {
+              if (!err) res.status(200).send(data);
+              else console.log("Mise à jour du post impossible! " + err);
+            }
+          );
+        }
       }
-    );
-  } else {
-    const updatePostContent = { message: req.body.message };
-    Post.findByIdAndUpdate(
-      req.params.id,
-      { $set: updatePostContent },
-      { new: true },
-      (err, data) => {
-        if (!err) res.status(200).send(data);
-        else console.log("Mise à jour du post impossible! " + err);
-      }
-    );
-  }
+    })
+    .catch((error) => {
+      res.status(400).json({ error });
+    });
 };
 
 exports.deletePost = (req, res, next) => {
+  const userData = res.locals.user;
   if (!ObjectID.isValid(req.params.id))
     return res.status(400).send("Id inconnu :" + req.params.id);
-  Post.findByIdAndRemove(req.params.id, (err, data) => {
-    if (!err) res.status(200).send(data);
-    else console.log("Suppression du post impossible! " + err);
-  });
+  Post.findOne({ _id: req.params.id })
+    .then((post) => {
+      postData = post;
+      if (postData.posterId == userData._id || userData.role === "admin") {
+        Post.findByIdAndRemove(req.params.id, (err, data) => {
+          if (!err) res.status(200).send(data);
+          else console.log("Suppression du post impossible! " + err);
+        });
+      }
+    })
+    .catch((error) => {
+      res.status(400).json({ error });
+    });
 };
 
 module.exports.likePost = async (req, res) => {

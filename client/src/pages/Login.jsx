@@ -20,7 +20,7 @@ const LogContainer = styled.section`
   flex-direction: row;
   justify-content: space-between;
   margin: auto;
-  width: 70%;
+  width: 80%;
   height: 70%;
   background-color: #fff;
   @media screen and (min-width: 600px) and (max-width: 992px) {

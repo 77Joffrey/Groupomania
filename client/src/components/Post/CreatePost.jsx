@@ -5,6 +5,18 @@ import styled from "styled-components";
 import colors from "../../utils/style/colors";
 import { isEmpty } from "../../utils/tools";
 
+const AddpostContainer = styled.div`
+  margin: auto;
+  width: 95%;
+  @media screen and (max-width: 599px) {
+    width: 95%;
+  }
+`;
+
+const PostMessageStyle = styled.textarea`
+  padding: 5px;
+`;
+
 const SubmitBtn = styled.input`
   width: fit-content;
   background-color: ${colors.tertiary};
@@ -65,7 +77,7 @@ const CreatePost = (props) => {
             title: "Attention!",
             text: "Vous n'êtes pas authentifié! Veuillez vous connecter!",
             icon: "error",
-          })
+          });
           window.location = "/login";
         });
     }
@@ -99,16 +111,17 @@ const CreatePost = (props) => {
   };
 
   return (
-    <div>
+    <AddpostContainer>
       <form onSubmit={handleAddPost}>
-        <textarea
+        <PostMessageStyle
           name="message"
           rows="5"
           cols="50"
           maxLength="500"
           onChange={(e) => setAddMessage(e.target.value)}
           value={addMessage}
-        ></textarea>
+          placeholder="Veuillez saisir votre message"
+        ></PostMessageStyle>
 
         <input
           type="file"
@@ -120,7 +133,9 @@ const CreatePost = (props) => {
           className="btn-active"
         />
         <label htmlFor="customFile">{filename}</label>
-        <button onClick={handleUploadPicture} className="btn-active">Importer</button>
+        <button onClick={handleUploadPicture} className="btn-active">
+          Importer
+        </button>
         {!isEmpty(uploadedFile) ? (
           <div>
             <CardPicture src={uploadedFile.filePath} alt="user_post_pic" />
@@ -129,7 +144,7 @@ const CreatePost = (props) => {
 
         <SubmitBtn type="submit" value="Valider" />
       </form>
-    </div>
+    </AddpostContainer>
   );
 };
 

@@ -7,11 +7,6 @@ import { UserIdContext } from "./components/AppContext";
 import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
-import swal from "sweetalert";
-
-axios.defaults.headers.post["Content-Type"] = "application/json";
-axios.defaults.headers.post["Accept"] = "application/json";
-axios.defaults.withCredentials = true;
 
 function App() {
   const [userId, setUserId] = useState(null);
@@ -31,11 +26,7 @@ function App() {
           setPseudo(res.data.pseudo);
         })
         .catch((err) => {
-          swal({
-            title: "Attention!",
-            text: "Vous n'êtes pas authentifié! Veuillez vous connecter!",
-            icon: "error",
-          });
+          console.log(err);
         });
     };
     fetchToken();
@@ -49,7 +40,7 @@ function App() {
       <UserIdContext.Provider value={{ userId, role, pseudo }}>
         <Navbar />
         <Routes>
-          <Route index path="/" element={<Home />} />
+          <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
         </Routes>
       </UserIdContext.Provider>

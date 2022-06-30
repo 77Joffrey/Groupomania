@@ -43,13 +43,11 @@ exports.signIn = (req, res, next) => {
             const errors = signInErrors(err);
             return res.status(401).json({ errors });
           }
-          console.log(user.pseudo);
           const token = jwt.sign(
             { userId: user._id, role: user.role, pseudo: user.pseudo },
             process.env.USER_TOKEN_PASS,
             { expiresIn: "24h" }
           );
-          console.log(token.userId);
           res.cookie("jwt", token, {
             httpOnly: true,
             maxAge: 24 * 60 * 60 * 1000,

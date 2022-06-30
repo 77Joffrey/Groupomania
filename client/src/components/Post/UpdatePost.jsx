@@ -21,6 +21,10 @@ const FormDataStyle = styled.form`
   text-align: center;
 `;
 
+const PostMessageStyle = styled.textarea`
+  padding: 5px;
+`;
+
 const CardPicture = styled.img`
   width: 360px;
   height: 250px;
@@ -116,14 +120,14 @@ const UpdateText = (props) => {
   return (
     <React.Fragment>
       <FormDataStyle onSubmit={handleUpdatePost}>
-        <textarea
+        <PostMessageStyle
           name="message"
           rows="5"
           cols="50"
           maxLength="500"
           onChange={(e) => setUpdateMessage(e.target.value)}
           value={updateMessage}
-        ></textarea>
+        ></PostMessageStyle>
 
         <input
           type="file"

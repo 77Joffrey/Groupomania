@@ -1,14 +1,25 @@
 const jwt = require("jsonwebtoken");
+const User = require("../models/User");
 
 module.exports.checkUser = (req, res, next) => {
   const token = req.cookies.jwt;
   if (token) {
-    jwt.verify(token, process.env.USER_TOKEN_PASS);
-    next();
+    jwt.verify(
+      token,
+      process.env.USER_TOKEN_PASS,
+      async (err, decodedToken) => {
+        if (err) {
+          res.locals.user = null;
+          next();
+        } else {
+          let user = await User.findById(decodedToken.userId);
+          res.locals.user = user;
+          next();
+        }
+      }
+    );
   } else {
-    res.sendStatus(401)
-    alert ('Erreur : Authentification impossible!');
-    window.location = "/login"
+    res.status(401).send("Absence de token!");
   }
 };
 
@@ -34,7 +45,5 @@ exports.requireAuth = (req, res, next) => {
     );
   } else {
     res.status(401).send("Absence de token!");
-    alert ('Erreur : Authentification impossible!');
-    window.location = "/login"
   }
 };

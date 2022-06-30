@@ -1,14 +1,9 @@
 import React, { useState, useContext, useEffect } from "react";
 import { UserIdContext } from "../components/AppContext";
-import styled from "styled-components";
 import axios from "axios";
 
 import Thread from "../components/Thread";
 import Login from "./Login";
-
-const HomeContainer = styled.div`
-  width: 100%;
-`;
 
 const Home = () => {
   const [posts, setPosts] = useState([]);
@@ -32,9 +27,9 @@ const Home = () => {
   const userId = useContext(UserIdContext);
 
   return (
-    <HomeContainer>
+    <React.Fragment>
       {userId.userId !== null ? <Thread posts={posts} /> : <Login />}
-    </HomeContainer>
+    </React.Fragment>
   );
 };
 

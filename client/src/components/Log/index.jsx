@@ -44,15 +44,12 @@ const LoginChoiceStyle = styled.ul`
 `;
 
 const Log = () => {
-  const [signUpMod, setSignUpMod] = useState(true);
-  const [signInMod, setSignInMod] = useState(false);
+  const [signUpMod, setSignUpMod] = useState(false);
 
   const handleMods = (e) => {
     if (e.target.id === "register") {
-      setSignInMod(false);
       setSignUpMod(true);
     } else if (e.target.id === "login") {
-      setSignInMod(true);
       setSignUpMod(false);
     }
   };
@@ -67,8 +64,7 @@ const Log = () => {
           Se connecter
         </li>
       </LoginChoiceStyle>
-      {signUpMod ? <SignUpForm /> : null}
-      {signInMod ? <SignInForm /> : null}
+      {signUpMod ? <SignUpForm /> : <SignInForm />}
     </LogFormContainer>
   );
 };
