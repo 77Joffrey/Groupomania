@@ -2,7 +2,7 @@ const Post = require("../models/Post");
 const ObjectID = require("mongoose").Types.ObjectId;
 const fs = require("fs");
 const jwt = require("jsonwebtoken");
-const { verify } = require("crypto");
+// const { verify } = require("crypto");
 
 exports.getPosts = (req, res, next) => {
   Post.find((err, data) => {
@@ -91,9 +91,11 @@ exports.deletePost = (req, res, next) => {
     .then((post) => {
       postData = post;
       if (postData.posterId == userData._id || userData.role === "admin") {
-        Post.findByIdAndRemove(req.params.id, (err, data) => {
-          if (!err) res.status(200).send(data);
-          else console.log("Suppression du post impossible! " + err);
+        fs.unlink(`../client/public/images/posts/${postData.picture}`, () => {
+          Post.findByIdAndRemove(req.params.id, (err, data) => {
+            if (!err) res.status(200).send(data);
+            else console.log("Suppression du post impossible! " + err);
+          });
         });
       }
     })
